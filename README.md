@@ -10,7 +10,7 @@ A research-style study of 4-class brain tumor MRI classification (glioma, mening
 
 **Live demo:** coming soon  
 **Model weights:** coming soon  
-**Author:** EMAAN SHAHID ([GitHub](https://github.com/Emaan-Shahid/Medical-Vision-AI-XAI.git))
+**Author:** YOUR NAME ([GitHub](https://github.com/YOUR_GITHUB_USERNAME))
 
 ---
 
@@ -274,7 +274,7 @@ Medical-Vision-AI-XAI/
 
 **Run the demo locally**
 ```bash
-git clone https://github.com/Emaan-Shahid/Medical-Vision-AI-XAI.git
+git clone https://github.com/YOUR_GITHUB_USERNAME/Medical-Vision-AI-XAI.git
 cd Medical-Vision-AI-XAI
 python -m venv venv
 venv\Scripts\activate            # Windows (Mac/Linux: source venv/bin/activate)

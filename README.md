@@ -85,6 +85,8 @@ flowchart TD
 - Sizes range from 150x167 to 1375x1446 px (mean about 453x457). Color modes: 4,129 RGB, 3,067 grayscale, 3 RGBA, 1 palette.
 - Properties differ by class. `notumor` images are about 40% smaller on average (308x319 versus about 500x500) and 98% are stored as RGB files, versus 22% for `glioma`.
 
+- - The RGB-stored images contain no color information: for strict-test glioma and no-tumor scans, the red, green and blue channels were identical (median and 90th-percentile channel difference 0 on a 0 to 255 scale; maximum 3.7). The stored file format therefore marks image source or processing, not color.
+
 ![Sample images](results/sample_images.png)
 ![Class distribution](results/class_distribution.png)
 
@@ -165,7 +167,17 @@ Exact duplicates across splits convert a generalization test into a memorization
 | EfficientNet-B0 | Clean | 1,230 | 94.0 | 91.7 | 95.2 | 92.8 | 0.990 |
 | EfficientNet-B0 | **Strict** | 1,180 | **94.5** | 91.5 | 95.6 | 92.9 | 0.990 |
 
-TODO: add the 95% bootstrap confidence intervals and the McNemar p-value (from `results/metrics_with_ci.csv`) as a sentence here. Without intervals, a gap of 0.6 accuracy points between models should not be interpreted.
+**Uncertainty.** 95% bootstrap confidence intervals (1,000 resamples of the strict test set; images are treated as independent, so the intervals are likely optimistic):
+
+| Metric (%) | ResNet-50 | EfficientNet-B0 |
+|---|---|---|
+| Accuracy | 95.1 (93.7 to 96.3) | 94.5 (93.2 to 95.7) |
+| Macro F1 | 93.4 (91.7 to 95.0) | 92.9 (91.1 to 94.5) |
+| Macro recall | 96.0 (95.0 to 96.9) | 95.6 (94.6 to 96.6) |
+| ROC-AUC (macro) | 99.0 (98.5 to 99.4) | 99.0 (98.5 to 99.4) |
+| Glioma sensitivity | 86.5 (82.9 to 89.7) | 84.4 (80.5 to 87.9) |
+
+The models are statistically indistinguishable: ResNet-50 was correct and EfficientNet-B0 wrong on 15 test images, the reverse on 8 (exact McNemar test, p = 0.21). The glioma sensitivity intervals lie well below the validation estimate (about 99%).
 
 Macro precision is lower than macro recall on the strict set because few `notumor` images remain (112), so the 37 gliomas labeled "no tumor" weigh heavily on `notumor` precision (112 of 151 predictions, about 74%).
 
@@ -182,6 +194,8 @@ Derived from the confusion matrices below.
 | meningioma (293) | 97.6 | 98.4 | 98.6 | 97.4 |
 | notumor (112) | 100.0 | 96.3 | 100.0 | 96.3 |
 | pituitary (398) | 100.0 | 99.5 | 99.5 | 99.6 |
+
+Sensitivities and specificities of 100.0 denote no observed errors; the exact 95% lower bound is 96.8% for `notumor` sensitivity (112 images). Bootstrap intervals for all entries are in `results/metrics_with_ci.csv`.
 
 ![Confusion matrices](results/confusion_matrices_strict.png)
 ![ROC curves](results/roc_curves_strict.png)
